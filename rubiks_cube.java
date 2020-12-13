@@ -1,19 +1,44 @@
 package Codesquad_test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Scanner;
+
+import javax.naming.InsufficientResourcesException;
 
 class rubiks{
 	String[][][] cube = new String[6][3][3];
 	int count=0;
 	
+	// 큐브 상태 초기화 및 랜덤 생성
 	void init() {
-		String[][][] cube = {{{"B0","B1","B2"},{"B3","B4","B5"},{"B6","B7","B8"}},{{"W0","W1","W2"},{"W3","W4","W5"},{"W6","W7","W8"}},{{"O0","O1","O2"},{"O3","O4","O5"},{"O6","O7","O8"}},{{"G0","G1","G2"},{"G3","G4","G5"},{"G6","G7","G8"}},{{"Y0","Y1","Y2"},{"Y3","Y4","Y5"},{"Y6","Y7","Y8"}},{{"R0","R1","R2"},{"R3","R4","R5"},{"R6","R7","R8"}}};
-		this.cube = cube;
+		String[][][] init_cube = {{{"B0","B1","B2"},{"B3","B4","B5"},{"B6","B7","B8"}},{{"W0","W1","W2"},{"W3","W4","W5"},{"W6","W7","W8"}},{{"O0","O1","O2"},{"O3","O4","O5"},{"O6","O7","O8"}},{{"G0","G1","G2"},{"G3","G4","G5"},{"G6","G7","G8"}},{{"Y0","Y1","Y2"},{"Y3","Y4","Y5"},{"Y6","Y7","Y8"}},{{"R0","R1","R2"},{"R3","R4","R5"},{"R6","R7","R8"}}};
 		
+		// 큐브 랜덤 생성
+		ArrayList<String> random = new ArrayList<String>();
+		for(int i=0;i<init_cube.length;i++) {
+			for(int j=0;j<init_cube[0].length;j++) {
+				for(int k=0;k<init_cube[0][0].length;k++) {
+					random.add(init_cube[i][j][k]);
+				}
+			}
+		}
+		Collections.shuffle(random);
+		int count=0;
+		
+		for(int i=0;i<init_cube.length;i++) {
+			for(int j=0;j<init_cube[0].length;j++) {
+				for(int k=0;k<init_cube[0][0].length;k++) {
+					cube[i][j][k]=random.get(count);
+					count++;
+				}
+			}
+		}
 		print();
 	}
 	
+	// 사용자 입력값 구분 후 명령어 별 큐브 회전 메소드 호출
 	void input(String input){
 		String[] input_arr = input.split("");
 		String inpstr = "";
@@ -37,7 +62,8 @@ class rubiks{
 			count++;
 		}
 	}
-
+	
+	// 사용자 명령어에 따른 회선 메소드 호출 결정
 	void order(String input) {
 		System.out.println(input);
 		if(input.equals("F")) {
@@ -67,9 +93,10 @@ class rubiks{
 		}
 		
 	}
-
+	
+	// 정방향 회전 메소드, 호출된 메소드에 따라 큐브의 값 이동
 	void F() {
-			Turn90(2);
+			Turn90(2);	// 정방향 회전 시 해당 면 90도 회전
 			for(int i=0;i<cube[2].length;i++) {
 				String temp = cube[0][2][i];
 				cube[0][2][i] = cube[1][cube[2].length-1-i][2];
@@ -78,9 +105,9 @@ class rubiks{
 				cube[3][i][0] = temp;
 		}
 	}
-	
+	// 역방향 회전 메소드, 호출된 메소드에 따라 큐브의 값 이동
 	void rF() {
-			rTurn90(2);
+			rTurn90(2);	// 역방향 회전 시 해당 면 역으로 90도 회전
 			for(int i=0;i<cube[2].length;i++) {
 				String temp = cube[0][2][i];
 				cube[0][2][i] = cube[3][i][0];
@@ -201,6 +228,7 @@ class rubiks{
 			}
 	}
 	
+	// 면 정방향 90도 회전
 	void Turn90(int side) {
 		int n = cube[side].length;
 		int m = cube[side][0].length;		
@@ -218,6 +246,7 @@ class rubiks{
 		}
 	}
 	
+	// 면 역방향 90도 회전
 	void rTurn90(int side) {
 		int n = cube[side].length;
 		int m = cube[side][0].length;		
@@ -235,6 +264,7 @@ class rubiks{
 		}
 	}
 	
+	// 큐브 상태 출력
 	void print(){
 		System.out.println("            "+Arrays.toString(cube[0][0]));
 		System.out.println("            "+Arrays.toString(cube[0][1]));
@@ -251,13 +281,11 @@ class rubiks{
 		System.out.println("            "+Arrays.toString(cube[5][2]));
 	}
 }
-	
-
 
 public class rubiks_cube {
 
 	public static void main(String[] args) {
-		double beforeTime = System.currentTimeMillis();
+		double beforeTime = System.currentTimeMillis();	// 프로그램 경과 시간 체크
 		rubiks cube = new rubiks();
 		Scanner scan = new Scanner(System.in);
 		
