@@ -14,7 +14,6 @@ class rubiks{
 	// 큐브 상태 초기화 및 랜덤 생성
 	void init() {
 		String[][][] init_cube = {{{"B0","B1","B2"},{"B3","B4","B5"},{"B6","B7","B8"}},{{"W0","W1","W2"},{"W3","W4","W5"},{"W6","W7","W8"}},{{"O0","O1","O2"},{"O3","O4","O5"},{"O6","O7","O8"}},{{"G0","G1","G2"},{"G3","G4","G5"},{"G6","G7","G8"}},{{"Y0","Y1","Y2"},{"Y3","Y4","Y5"},{"Y6","Y7","Y8"}},{{"R0","R1","R2"},{"R3","R4","R5"},{"R6","R7","R8"}}};
-		
 		// 큐브 랜덤 생성
 		ArrayList<String> random = new ArrayList<String>();
 		for(int i=0;i<init_cube.length;i++) {
@@ -39,18 +38,15 @@ class rubiks{
 	}
 	
 	// 사용자 입력값 구분 후 명령어 별 큐브 회전 메소드 호출
-	void input(String input){
+	boolean input(String input){
 		String[] input_arr = input.split("");
 		String inpstr = "";
 		
 		for(int i=0;i<input_arr.length;i++) {
 			if(input_arr[i].equals("Q")) {
-				System.out.println("Bye~");
 				break;
 			}
-			
 			inpstr=input_arr[i];
-			
 			if(input_arr[i].equals("'")) continue;
 			if(input_arr[i]!=input_arr[input_arr.length-1]) {
 				if(input_arr[i+1].equals("'")) {
@@ -59,8 +55,9 @@ class rubiks{
 			}
 			order(inpstr);
 			print();
-			count++;
+			count++; 
 		}
+		return finish();
 	}
 	
 	// 사용자 명령어에 따른 회선 메소드 호출 결정
@@ -91,7 +88,6 @@ class rubiks{
 		} else if(input.equals("D'")) {
 			rD();
 		}
-		
 	}
 	
 	// 정방향 회전 메소드, 호출된 메소드에 따라 큐브의 값 이동
@@ -280,12 +276,33 @@ class rubiks{
 		System.out.println("            "+Arrays.toString(cube[5][1]));
 		System.out.println("            "+Arrays.toString(cube[5][2]));
 	}
+	
+	// 큐브가 초기 정렬된 상태와 일치하는지 여부 확인
+	boolean finish() {
+		String[][][] init_cube = {{{"B0","B1","B2"},{"B3","B4","B5"},{"B6","B7","B8"}},{{"W0","W1","W2"},{"W3","W4","W5"},{"W6","W7","W8"}},{{"O0","O1","O2"},{"O3","O4","O5"},{"O6","O7","O8"}},{{"G0","G1","G2"},{"G3","G4","G5"},{"G6","G7","G8"}},{{"Y0","Y1","Y2"},{"Y3","Y4","Y5"},{"Y6","Y7","Y8"}},{{"R0","R1","R2"},{"R3","R4","R5"},{"R6","R7","R8"}}};
+		int count=0;
+		
+		for(int i=0;i<init_cube.length;i++) {
+			for(int j=0;j<init_cube[0].length;j++) {
+				for(int k=0;k<init_cube[0][0].length;k++) {
+					if(init_cube[i][j][k].equals(cube[i][j][k])) {
+						count++;
+					}
+				}
+			}
+		}
+		if(count==54) {
+			return true;
+		} else {
+			return false;
+		}
+	}
 }
 
 public class rubiks_cube {
 
 	public static void main(String[] args) {
-		double beforeTime = System.currentTimeMillis();	// 프로그램 경과 시간 체크
+		long beforeTime = System.currentTimeMillis();	// 프로그램 경과 시간 체크
 		rubiks cube = new rubiks();
 		Scanner scan = new Scanner(System.in);
 		
@@ -294,16 +311,20 @@ public class rubiks_cube {
 		while(true) {
 			System.out.print("CUBE> ");
 			String input = scan.next();
-			
-			cube.input(input);
 
-			if(input.contains("Q")) break;
+			if(cube.input(input)) {
+				System.out.println("축하합니다 모든 큐브를 맞추셨습니다.");
+				break;
+			} else if(input.contains("Q")) {
+				break;
+			}
 		}
 		scan.close();
-		double afterTime = System.currentTimeMillis();
-		double secDiffTime = (afterTime - beforeTime)/1000;
+		long afterTime = System.currentTimeMillis();
+		long secDiffTime = (afterTime - beforeTime)/1000;
+		System.out.format("경과 시간 : %02d:%02d %n",secDiffTime/60,secDiffTime%60);
 		System.out.println("조작 갯수 : "+ cube.count);
-		System.out.println("경과 시간 : "+ secDiffTime + "초");
+		System.out.println("이용해 주셔서 감사합니다.");
 	}
 }
 
