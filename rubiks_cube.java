@@ -9,6 +9,8 @@ class rubiks{
 	void init() {
 		String[][][] cube = {{{"B0","B1","B2"},{"B3","B4","B5"},{"B6","B7","B8"}},{{"W0","W1","W2"},{"W3","W4","W5"},{"W6","W7","W8"}},{{"O0","O1","O2"},{"O3","O4","O5"},{"O6","O7","O8"}},{{"G0","G1","G2"},{"G3","G4","G5"},{"G6","G7","G8"}},{{"Y0","Y1","Y2"},{"Y3","Y4","Y5"},{"Y6","Y7","Y8"}},{{"R0","R1","R2"},{"R3","R4","R5"},{"R6","R7","R8"}}};
 		this.cube = cube;
+		
+		print();
 	}
 	
 	void input(String input){
@@ -31,6 +33,7 @@ class rubiks{
 				}
 			}
 			order(inpstr);
+			print();
 		}
 	}
 
@@ -46,7 +49,7 @@ class rubiks{
 	}
 		for(int i=0;i<m;i++) {
 			for(int j=0;j<n;j++) {
-				cube[side][n-1-j][i] = rotate[i][j];
+				cube[side][i][j] = rotate[i][j];
 			}		
 		}
 	}
@@ -63,9 +66,25 @@ class rubiks{
 	}
 		for(int i=0;i<m;i++) {
 			for(int j=0;j<n;j++) {
-				cube[side][j][n-1-i] = rotate[i][j];
+				cube[side][i][j] = rotate[i][j];
 			}
 		}
+	}
+	
+	void print(){
+		System.out.println("            "+Arrays.toString(cube[0][0]));
+		System.out.println("            "+Arrays.toString(cube[0][1]));
+		System.out.println("            "+Arrays.toString(cube[0][2]));
+		
+		for(int i=0;i<cube[0].length;i++) {
+			for(int j=1;j<cube.length-1;j++) {
+				System.out.print(Arrays.toString(cube[j][i]));
+			}
+			System.out.println();
+		}
+		System.out.println("            "+Arrays.toString(cube[5][0]));
+		System.out.println("            "+Arrays.toString(cube[5][1]));
+		System.out.println("            "+Arrays.toString(cube[5][2]));
 	}
 }
 	
