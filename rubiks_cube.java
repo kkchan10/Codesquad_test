@@ -257,6 +257,7 @@ class rubiks{
 public class rubiks_cube {
 
 	public static void main(String[] args) {
+		double beforeTime = System.currentTimeMillis();
 		rubiks cube = new rubiks();
 		Scanner scan = new Scanner(System.in);
 		
@@ -271,7 +272,10 @@ public class rubiks_cube {
 			if(input.contains("Q")) break;
 		}
 		scan.close();
+		double afterTime = System.currentTimeMillis();
+		double secDiffTime = (afterTime - beforeTime)/1000;
 		System.out.println("조작 갯수 : "+ cube.count);
+		System.out.println("경과 시간 : "+ secDiffTime + "초");
 	}
 }
 
